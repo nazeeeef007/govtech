@@ -25,15 +25,15 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 
-For Case 1: 
-Issue: The bug occurs because we are mutating the user object directly before calling setUser. In React, state updates are asynchronous, and mutating the state directly doesn't trigger a re-render. React relies on detecting changes in state by comparing the previous state and the updated state, so directly modifying the state won't trigger that re-render.
+The reason for the issue in Case 1 is that we are altering the user object before doing setUser.  A direct state change in React does not result in a re-render because state changes are asynchronous.  Directly changing the state won't cause that re-render because React depends on comparing the old state with the current state to detect changes in state.
 
-Improvement:  Instead of mutating the state directly, we use the setUser function to create a new object with the updated age property using the spread operator ({ ...prevUser, age: 26 }). This ensures that React properly detects the change and triggers a re-render.
+ Improvement: We utilise the setUser function to generate a new object with the modified age attribute using the spread operator ({...prevUser, age: 26 }) rather than simply changing the state.  This guarantees that React correctly recognises the modification and initiates a re-render.
 
-For Case 2: 
-Issue: The issue here is that the user object is being mutated directly. As in case study 1, React cannot detect this change because the reference to the users array doesn't change. This will not trigger a re-render.
 
-Improvement:  Instead of mutating the user directly, we use map() to create a new array where we update the name of the user with the matching id. We return a new array each time, which allows React to detect the change and trigger a re-render. The spread operator ({ ...user, name: newName }) is used to create a new object with the updated name while preserving the rest of the properties of the user.
+The problem with Case 2 is that the user object is being changed directly.  Since the reference to the users array remains unchanged, React is unable to recognise this change, just like in case study 1.  A re-render won't be triggered by this.
+
+ Improvement: We use map() to generate a new array where we change the user's name with the matching id, rather than changing the user directly.  Because we always return a fresh array, React is able to recognise the change and initiate a re-render.  To generate a new object with the revised name while maintaining the remaining user properties, use the spread operator ({...user, name: newName }).
+
 
 Why the Issues Are Problematic:
 State mutation prevents React from detecting changes, which results in the UI not reflecting updates.
